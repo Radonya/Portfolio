@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FiGithub, FiLinkedin, FiMail, FiMoon, FiSun } from 'react-icons/fi';
-import { FaReact, FaPython, FaNetworkWired, FaDocker, FaNodeJs, FaAws, FaDatabase, FaTools, FaWhatsapp, FaGraduationCap, FaBriefcase, FaLaptopCode, FaSchool } from 'react-icons/fa';
+import { FaReact, FaPython, FaVuejs, FaDocker, FaNodeJs, FaAws, FaDatabase, FaTools, FaWhatsapp, FaGraduationCap, FaBriefcase, FaLaptopCode, FaSchool } from 'react-icons/fa';
 import { SiSpringboot, SiMongodb, SiMysql, SiGrafana, SiPrometheus, SiTailwindcss, SiTypescript } from 'react-icons/si';
 
 const ThemeToggle = ({ darkMode, toggleDarkMode }) => {
@@ -63,7 +63,7 @@ const AnimatedText = ({ text, className = '' }) => {
 
 const SkillCard = ({ category }) => {
     const iconMap = {
-        React: <FaReact />,
+        "React JS": <FaReact />,
         Python: <FaPython />,
         "Node.js": <FaNodeJs />,
         Docker: <FaDocker />,
@@ -75,6 +75,7 @@ const SkillCard = ({ category }) => {
         Prometheus: <SiPrometheus />,
         TypeScript: <SiTypescript />,
         Tailwind: <SiTailwindcss />,
+        "Vue JS": <FaVuejs />
     };
 
     return (
@@ -214,7 +215,6 @@ const ContactSection = () => {
             profileUrl: "mailto:arradoniaina1@gmail.com"
         }
     ];
-
     const containerVariants = {
         hidden: { opacity: 0 },
         visible: { opacity: 1, transition: { staggerChildren: 0.2 } }
@@ -261,7 +261,6 @@ const ContactSection = () => {
 
 const ProjectCategoryTabs = ({ activeCategory, setActiveCategory }) => {
     const categories = [
-        { id: 'all', label: 'Tous', icon: <FaLaptopCode /> },
         { id: 'personal', label: 'Personnels', icon: <FaLaptopCode /> },
         { id: 'academic', label: 'Académiques', icon: <FaSchool /> },
         { id: 'professional', label: 'Professionnels', icon: <FaBriefcase /> }
@@ -289,22 +288,25 @@ const ProjectCategoryTabs = ({ activeCategory, setActiveCategory }) => {
 };
 
 export default function App() {
-    const [darkMode, setDarkMode] = useState(false);
+    const [darkMode, setDarkMode] = useState(
+        ()=>{
+            const savetheme = localStorage.getItem('theme')
+            if (savetheme) {
+                return savetheme === 'light';
+            }
+            return window.matchMedia('(prefers-color-scheme: dark)').matches;
+        });
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [activeProjectCategory, setActiveProjectCategory] = useState('all');
 
     useEffect(() => {
+        localStorage.setItem('theme', darkMode ? 'dark' : 'light');
         if (darkMode) {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark');
         }
     }, [darkMode]);
-
-    useEffect(() => {
-        const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        setDarkMode(prefersDarkMode);
-    }, []);
 
     useEffect(() => {
         if (mobileMenuOpen) {
@@ -319,7 +321,7 @@ export default function App() {
     }, [mobileMenuOpen]);
 
     const toggleDarkMode = () => {
-        setDarkMode(!darkMode);
+        setDarkMode(darkMode=> !darkMode);
     };
 
     const projects = {
@@ -328,55 +330,60 @@ export default function App() {
                 title: "Portfolio Personnel",
                 description: "Site web personnel avec React et Tailwind CSS",
                 tech: ["React", "Tailwind CSS", "Framer Motion"],
-                image: "https://source.unsplash.com/random/800x600?website"
+                image: "/Portfolio.png"
             },
             {
-                title: "Application de Budgétisation",
-                description: "Application de suivi de budget personnel avec tableau de bord",
-                tech: ["React", "Node.js", "MongoDB", "Chart.js"],
+                title: "Journal de trading",
+                description: "Application de suivi de planning de trading avec tableau de bord",
+                tech: ["React", "Node.js", "Mysql", "Chart.js"],
                 image: "https://source.unsplash.com/random/800x600?finance"
-            }
+            },
+            {
+                title: "Sudoku Local",
+                description: "Developpement de sudoku ",
+                tech: ["React","Typescript"],
+                image: "/Soduku.png"
+            },
         ],
         academic: [
             {
-                title: "Projet Fin d'Études",
-                description: "Système de monitoring pour la sécurité des réseaux",
-                tech: ["Python", "Grafana", "Prometheus", "SNMP"],
+                title: "Application Web",
+                description: "Application de suivi et de gestion des reversation de billets de voyage",
+                tech: ["VueJS", "NodeJS", "PostgreSQL"],
                 image: "https://source.unsplash.com/random/800x600?security"
             },
             {
-                title: "Plateforme E-learning",
-                description: "Plateforme collaborative pour les étudiants",
-                tech: ["React", "Spring Boot", "MySQL"],
-                image: "https://source.unsplash.com/random/800x600?education"
-            }
-        ],
-        professional: [
-            {
-                title: "Plateforme E-commerce",
+                title: "Plateforme E-commerce Naiky",
                 description: "Développement fullstack d'une marketplace avec paiement en ligne",
-                tech: ["React", "Node.js", "MongoDB", "Stripe"],
+                tech: ["React", "Node.js", "PostgreSQL", "PayPal"],
                 image: "https://source.unsplash.com/random/800x600?ecommerce"
             },
             {
-                title: "Surveillance Réseau",
+                title: "Application mobile",
+                description: "Développement d'une application mobile pour reservation de billets de bateau",
+                tech: ["Flutter", "Node.js", "PostgreSQL"],
+                image: "/Titanic.jpg"
+            },
+        ],
+        professional: [
+
+            {
+                title: "Application de Suivi de remboursement medicaux",
                 description: "Solution de monitoring réseau temps réel avec alertes",
-                tech: ["Python", "SNMP", "Grafana", "Prometheus"],
-                image: "https://source.unsplash.com/random/800x600?network"
+                tech: ["VueJs", "Spring Boot", "PostgreSQL"],
+                image: "/OFMATA.png"
             },
             {
-                title: "Gestion Parc Informatique",
+                title: "Application Mobile suivie des decaissements",
                 description: "Application de gestion des équipements IT avec inventaire",
-                tech: ["Java", "Spring Boot", "React", "MySQL"],
+                tech: ["React Native", "Node.js", "MySQL"],
                 image: "https://source.unsplash.com/random/800x600?server"
             }
         ]
     };
-
     const filteredProjects = activeProjectCategory === 'all'
         ? [...projects.personal, ...projects.academic, ...projects.professional]
-        : projects[activeProjectCategory];
-
+        : [...projects[activeProjectCategory]];
 
 
     const skillCategories = [
@@ -414,23 +421,16 @@ export default function App() {
             skills: [
 
                 { name: "React Native", level: 80, color: "bg-green-600" },
-                { name: "Flutter", level: 65, color: "bg-green-400" }
+                { name: "Flutter", level: 75, color: "bg-green-400" }
             ]
         },
-        // {
-        //     name: "Infrastructure",
-        //     icon: <FaNetworkWired className="text-purple-500" size={20} />,
-        //     skills: [
-        //         { name: "Docker", level: 70, color: "bg-purple-500" },
-        //         { name: "AWS", level: 65, color: "bg-purple-600" },
-        //         { name: "Prometheus", level: 75, color: "bg-purple-400" }
-        //     ]
-        // },
+
         {
             name: "Base de données",
             icon: <FaDatabase className="text-indigo-500" size={20} />,
             skills: [
                 { name: "PostgreSQL", level: 80, color: "bg-indigo-500" },
+                { name: "FireBase", level: 50, color: "bg-indigo-500" },
                 { name: "MySQL", level: 75, color: "bg-indigo-600" }
             ]
         }
@@ -458,8 +458,7 @@ export default function App() {
                         <div className="hidden md:flex space-x-6 lg:space-x-8 mr-6">
                             <a href="#home"
                                className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Accueil</a>
-                            <a href="#education"
-                               className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Formation</a>
+
                             <a href="#skills"
                                className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Compétences</a>
                             <a href="#projects"
